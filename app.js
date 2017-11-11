@@ -1,17 +1,32 @@
-var fetcher = require('./libs/fetcher.js');
+var fetcher = require('./libs/fetcher');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const MongoModels = require('mongo-models');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
-fetcher.newsFetcher()
+MongoModels.connect("mongodb://localhost/news", {}, (err, db) => {
+
+    if (err) {
+        // TODO: throw error or try reconnecting
+        return;
+    }
+
+    // optionally, we can keep a reference to db if we want
+    // access to the db connection outside of our models
+    app.db = db;
+
+    console.log('Models are now connected to mongodb.');
+});
+
+//fetcher.sourcesFetcher()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
