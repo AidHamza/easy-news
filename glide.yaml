@@ -1,0 +1,5 @@
+package: github.com/AidHamza/easy-news
+import:
+- package: github.com/labstack/echo
+  version: ^3.2.4
+- package: gopkg.in/mgo.v2
