@@ -4,20 +4,19 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-type DB struct {
+type Handler struct {
 	Session *mgo.Session
 }
 
-func (d DB) Connect(url string) (err error)  {
-	d.Session, err = mgo.Dial(url)
+func Connect(url string) (s *mgo.Session, err error)  {
+	s, err = mgo.Dial(url)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	d.Session.SetMode(mgo.Monotonic, true)
-	d.Session = d.Session.Copy()
-	return nil	
+	s.SetMode(mgo.Monotonic, true)
+	return s, nil	
 }
 
-func (d DB) SetCollection(dbName string, collectionName string) (*mgo.Collection) {
-	return d.Session.DB(dbName).C(collectionName)
+func (d Handler) SetCollection(dbName string, collectionName string) (*mgo.Collection) {
+	return d.Session.Copy().DB(dbName).C(collectionName)
 }
