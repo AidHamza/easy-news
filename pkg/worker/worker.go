@@ -1,13 +1,13 @@
 package worker
 
 import (
-	"time"
 	"github.com/AidHamza/easy-news/pkg/articles"
+	"time"
 )
 
 func GrabArticles() {
-  for {
-    <-time.After(5 * time.Second)
-    go articles.Grab("techcrunch")
-  }
+	for {
+		<-time.After(5 * time.Second)
+		go articles.Grab("techcrunch")
+	}
 }
